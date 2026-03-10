@@ -32,7 +32,7 @@ function Header() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const logoSrc =
     theme === 'dark'
-      ? '/img/vert_cor_negativo_page-0001.png'
+      ? '/img/logo-positiva.png'
       : '/img/logo-positiva.png'
 
   useEffect(() => {
