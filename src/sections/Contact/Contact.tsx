@@ -172,17 +172,17 @@ function Contact() {
         <aside className={styles.info}>
           <h3>{text.direct}</h3>
           <p>
-            WhatsApp: <a href="https://wa.me/5511999999999">(11) 99999-9999</a>
+            WhatsApp: <a href="https://wa.me/11917891531">(11) 91789-1531</a>
           </p>
           <p>
-            Telefone: <a href="tel:+551130000000">(11) 2431-5030</a>
+            Telefone: <a href="tel:+112431-5030">(11) 2431-5030</a>
           </p>
           <p>
-            E-mail: <a href="mailto:contato@spflylogistica.com.br">comercial@spfly.com.br</a>
+            E-mail: <a href="mailto:comercial@spfly.com.brr">comercial@spfly.com.br</a>
           </p>
           <a
             className={styles.whatsBtn}
-            href="https://wa.me/5511999999999"
+            href="https://wa.me/11917891531"
             target="_blank"
             rel="noreferrer"
           >

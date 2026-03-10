@@ -30,10 +30,6 @@ const navHrefs = [
 function Header() {
   const { language, setLanguage } = useLanguage()
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
-  const logoSrc =
-    theme === 'dark'
-      ? '/img/vert_cor_negativo_page-0001.png'
-      : '/img/logo-positiva.png'
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('spfly-theme')
@@ -56,8 +52,13 @@ function Header() {
       <div className={styles.container}>
         <a href="#inicio" className={styles.brand}>
           <img
-            className={`${styles.brandLogo} ${theme === 'dark' ? styles.brandLogoDark : ''}`}
-            src={logoSrc}
+            className={`${styles.brandLogo} ${styles.brandLogoLight}`}
+            src="/img/logo-positiva.png"
+            alt="SPFLY Logística"
+          />
+          <img
+            className={`${styles.brandLogo} ${styles.brandLogoDark}`}
+            src="/img/vert_cor_negativo_page-0001.png"
             alt="SPFLY Logística"
           />
         </a>

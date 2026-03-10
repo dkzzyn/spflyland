@@ -44,45 +44,63 @@ const clients: Client[] = [
   {
     id: 1,
     name: 'Iplace',
-    segment: { pt: 'Celulares', es: 'Retail', en: 'Retail' },
+    segment: {
+      pt: 'Varejo de tecnologia',
+      es: 'Retail de tecnologia',
+      en: 'Technology retail',
+    },
     logoUrl: '/img/logo-iplace.png',
   },
-  { 
+  {
     id: 2,
-    name: 'Arezo',
+    name: 'Arezzo',
     segment: {
-      pt: 'Transporte rodoviário',
-      es: 'Transporte por carretera',
-      en: 'Road transportation',
+      pt: 'Moda e calçados',
+      es: 'Moda y calzado',
+      en: 'Fashion and footwear',
     },
     logoUrl: '/img/logo-arezo.png',
   },
   {
     id: 3,
-    name: 'MarketPro',
-    segment: { pt: 'E-commerce', es: 'E-commerce', en: 'E-commerce' },
-    logoUrl: '/logos/marketpro.svg',
+    name: 'Ferragamo',
+    segment: {
+      pt: 'Bens de luxo',
+      es: 'Bienes de lujo',
+      en: 'Luxury goods',
+    },
+    logoUrl: '/img/logo-ferragamo.png',
   },
   {
     id: 4,
-    name: 'HealthCare SP',
+    name: 'Jequiti',
     segment: {
-      pt: 'Produtos hospitalares',
-      es: 'Productos hospitalarios',
-      en: 'Hospital supplies',
+      pt: 'Perfumaria e cosméticos',
+      es: 'Perfumería y cosméticos',
+      en: 'Perfumery and cosmetics',
     },
-    logoUrl: '/logos/healthcare-sp.svg',
+    logoUrl: '/img/logo-jequiti.png',
   },
   {
     id: 5,
-    name: 'FoodMax',
+    name: 'Arklok',
     segment: {
-      pt: 'Alimentos e bebidas',
-      es: 'Alimentos y bebidas',
-      en: 'Food and beverages',
+      pt: 'Tecnologia e infraestrutura',
+      es: 'Tecnología e infraestructura',
+      en: 'Technology and infrastructure',
     },
-    logoUrl: '/logos/foodmax.svg',
+    logoUrl: '/img/logo-arklok.png',
   },
+{
+  id: 6,
+  name: 'Louis vuitton',
+  segment: {
+    pt: 'Bens de luxo',
+    es: 'Bienes de lujo',
+    en: 'Luxury goods',
+  },
+  logoUrl: '/img/logo-lv.png',
+},
 ]
 
 const copy = {
@@ -90,19 +108,19 @@ const copy = {
     title: 'Principais Clientes',
     subtitle:
       'Atendemos empresas de diferentes segmentos com operações logísticas dedicadas e alto nível de serviço.',
-    hint: 'Rolagem automática ativa. Arraste para explorar.',
+    listAriaLabel: 'Lista horizontal de clientes',
   },
   es: {
     title: 'Principales Clientes',
     subtitle:
-      'Atendemos empresas de diferentes segmentos con operaciones logísticas dedicadas y alto nivel de servicio.',
-    hint: 'Desplazamiento automático activo. Arrastre para explorar.',
+      'Atendemos a empresas de diferentes segmentos con operaciones logísticas dedicadas y un alto nivel de servicio.',
+    listAriaLabel: 'Lista horizontal de clientes',
   },
   en: {
     title: 'Main Clients',
     subtitle:
-      'We support companies from different segments with dedicated logistics operations and high service levels.',
-    hint: 'Auto-scroll enabled. Drag to explore.',
+      'We serve companies across different segments with dedicated logistics operations and high service levels.',
+    listAriaLabel: 'Horizontal client list',
   },
 } as const
 
@@ -183,7 +201,7 @@ function Clients() {
             onPointerLeave={onPointerUp}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
-            aria-label="Lista horizontal de clientes"
+            aria-label={copy[language].listAriaLabel}
           >
             {[...clients, ...clients].map((client, index) => (
               <article className={styles.card} key={`${client.id}-${index}`}>

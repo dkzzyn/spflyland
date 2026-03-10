@@ -30,8 +30,21 @@
   display: block;
 }
 
+.brandLogoLight {
+  display: block;
+}
+
 .brandLogoDark {
+  display: none;
   height: 92px;
+}
+
+:global(:root[data-theme='dark']) .brandLogoLight {
+  display: none;
+}
+
+:global(:root[data-theme='dark']) .brandLogoDark {
+  display: block;
 }
 
 .nav {
