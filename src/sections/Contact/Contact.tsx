@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import styles from './Contact.module.css'
+import { useLanguage } from '../../i18n/LanguageContext'
 
 type FormData = {
   nome: string
@@ -20,7 +21,69 @@ const initialForm: FormData = {
   mensagem: '',
 }
 
+const copy = {
+  pt: {
+    title: 'Fale com nosso time',
+    subtitle:
+      'Envie sua necessidade logística e retornaremos com uma proposta sob medida.',
+    placeholders: {
+      nome: 'Nome',
+      empresa: 'Empresa',
+      email: 'E-mail',
+      telefone: 'Telefone',
+      operacao: 'Tipo de operação',
+      mensagem: 'Mensagem',
+    },
+    error: 'Preencha todos os campos obrigatórios.',
+    success:
+      'Mensagem enviada com sucesso! Em um projeto real, conecte aqui ao backend ou WhatsApp API.',
+    submit: 'Enviar mensagem',
+    direct: 'Contato direto',
+    openWhats: 'Abrir WhatsApp',
+  },
+  es: {
+    title: 'Hable con nuestro equipo',
+    subtitle:
+      'Envíe su necesidad logística y volveremos con una propuesta personalizada.',
+    placeholders: {
+      nome: 'Nombre',
+      empresa: 'Empresa',
+      email: 'Correo',
+      telefone: 'Teléfono',
+      operacao: 'Tipo de operación',
+      mensagem: 'Mensaje',
+    },
+    error: 'Complete todos los campos obligatorios.',
+    success:
+      '¡Mensaje enviado con éxito! En un proyecto real, conecte aquí su backend o API de WhatsApp.',
+    submit: 'Enviar mensaje',
+    direct: 'Contacto directo',
+    openWhats: 'Abrir WhatsApp',
+  },
+  en: {
+    title: 'Talk to our team',
+    subtitle:
+      'Send your logistics needs and we will return with a tailored proposal.',
+    placeholders: {
+      nome: 'Name',
+      empresa: 'Company',
+      email: 'E-mail',
+      telefone: 'Phone',
+      operacao: 'Operation type',
+      mensagem: 'Message',
+    },
+    error: 'Please fill in all required fields.',
+    success:
+      'Message sent successfully! In a real project, connect this to your backend or WhatsApp API.',
+    submit: 'Send message',
+    direct: 'Direct contact',
+    openWhats: 'Open WhatsApp',
+  },
+} as const
+
 function Contact() {
+  const { language } = useLanguage()
+  const text = copy[language]
   const [formData, setFormData] = useState<FormData>(initialForm)
   const [error, setError] = useState<string>('')
   const [sent, setSent] = useState<boolean>(false)
@@ -39,7 +102,7 @@ function Contact() {
 
     if (requiredFields.some((value) => value.trim() === '')) {
       setSent(false)
-      setError('Preencha todos os campos obrigatórios.')
+      setError(text.error)
       return
     }
 
@@ -52,20 +115,17 @@ function Contact() {
     <section id="contato" className={styles.section}>
       <div className={styles.container}>
         <div className={styles.formWrapper}>
-          <h2>Fale com nosso time</h2>
-          <p>
-            Envie sua necessidade logística e retornaremos com uma proposta sob
-            medida.
-          </p>
+          <h2>{text.title}</h2>
+          <p>{text.subtitle}</p>
 
           <form onSubmit={onSubmit} className={styles.form} noValidate>
             <input
-              placeholder="Nome"
+              placeholder={text.placeholders.nome}
               value={formData.nome}
               onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
             />
             <input
-              placeholder="Empresa"
+              placeholder={text.placeholders.empresa}
               value={formData.empresa}
               onChange={(e) =>
                 setFormData({ ...formData, empresa: e.target.value })
@@ -73,26 +133,26 @@ function Contact() {
             />
             <input
               type="email"
-              placeholder="E-mail"
+              placeholder={text.placeholders.email}
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
             <input
-              placeholder="Telefone"
+              placeholder={text.placeholders.telefone}
               value={formData.telefone}
               onChange={(e) =>
                 setFormData({ ...formData, telefone: e.target.value })
               }
             />
             <input
-              placeholder="Tipo de operação"
+              placeholder={text.placeholders.operacao}
               value={formData.operacao}
               onChange={(e) =>
                 setFormData({ ...formData, operacao: e.target.value })
               }
             />
             <textarea
-              placeholder="Mensagem"
+              placeholder={text.placeholders.mensagem}
               rows={4}
               value={formData.mensagem}
               onChange={(e) =>
@@ -102,16 +162,15 @@ function Contact() {
             {error && <p className={styles.error}>{error}</p>}
             {sent && (
               <p className={styles.success}>
-                Mensagem enviada com sucesso! Em um projeto real, conecte aqui ao
-                backend ou WhatsApp API.
+                {text.success}
               </p>
             )}
-            <button type="submit">Enviar mensagem</button>
+            <button type="submit">{text.submit}</button>
           </form>
         </div>
 
         <aside className={styles.info}>
-          <h3>Contato direto</h3>
+          <h3>{text.direct}</h3>
           <p>
             WhatsApp: <a href="https://wa.me/5511999999999">(11) 99999-9999</a>
           </p>
@@ -127,7 +186,7 @@ function Contact() {
             target="_blank"
             rel="noreferrer"
           >
-            Abrir WhatsApp
+            {text.openWhats}
           </a>
         </aside>
       </div>

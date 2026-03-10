@@ -1,17 +1,17 @@
 .footer {
   background: var(--footer-bg);
   color: var(--footer-text);
-  padding: 24px 0;
+  padding: 36px 0;
 }
 
 .container {
   width: min(var(--container), 92%);
   margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px 24px;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr 1.8fr 1.1fr;
+  gap: 16px 22px;
   font-size: 0.92rem;
+  align-items: start;
 }
 
 .container a {
@@ -20,4 +20,52 @@
 
 .container a:hover {
   color: var(--primary);
+}
+
+.brandBlock h3 {
+  margin: 0;
+  color: #ffffff;
+}
+
+.brandBlock p {
+  margin: 6px 0 0;
+}
+
+.linksBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.infoBlock p {
+  margin: 0 0 8px;
+  line-height: 1.4;
+}
+
+.ctaBlock p {
+  margin: 0 0 10px;
+  color: #ffffff;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: #fff !important;
+  font-weight: 700;
+}
+
+@media (max-width: 1080px) {
+  .container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
 }

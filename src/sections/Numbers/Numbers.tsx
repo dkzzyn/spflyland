@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import styles from './Numbers.module.css'
+import { useLanguage } from '../../i18n/LanguageContext'
 
 type Metric = {
-  label: string
+  label: Record<'pt' | 'es' | 'en', string>
   target: number
   decimals?: number
   suffix: string
@@ -11,28 +12,47 @@ type Metric = {
 
 const metrics: Metric[] = [
   {
-    label: 'Satisfacao do Cliente',
+    label: {
+      pt: 'Satisfacao do Cliente',
+      es: 'Satisfacción del Cliente',
+      en: 'Customer Satisfaction',
+    },
     target: 99.9,
     decimals: 1,
     suffix: '%',
   },
   {
-    label: 'Clientes SPFLY',
+    label: {
+      pt: 'Clientes SPFLY',
+      es: 'Clientes SPFLY',
+      en: 'SPFLY Clients',
+    },
     target: 80,
     suffix: '+',
   },
   {
-    label: 'Entregas Realizadas',
+    label: {
+      pt: 'Entregas Realizadas',
+      es: 'Entregas Realizadas',
+      en: 'Completed Deliveries',
+    },
     target: 65000,
     suffix: '+',
   },
 ]
+
+const titles = {
+  pt: 'Nossos Numeros SPFLY',
+  es: 'Nuestros Números SPFLY',
+  en: 'Our SPFLY Numbers',
+} as const
 
 type CounterValueProps = {
   start: boolean
   target: number
   decimals?: number
   durationMs?: number
+  locale: string
 }
 
 function CounterValue({
@@ -40,6 +60,7 @@ function CounterValue({
   target,
   decimals = 0,
   durationMs = 1600,
+  locale,
 }: CounterValueProps) {
   const [value, setValue] = useState<number>(0)
 
@@ -65,7 +86,7 @@ function CounterValue({
 
   return (
     <>
-      {new Intl.NumberFormat('en-US', {
+      {new Intl.NumberFormat(locale, {
         minimumFractionDigits: decimals,
         maximumFractionDigits: decimals,
       }).format(value)}
@@ -73,7 +94,11 @@ function CounterValue({
   )
 }
 
+const locales = { pt: 'pt-BR', es: 'es-ES', en: 'en-US' } as const
+
+
 function Numbers() {
+  const { language } = useLanguage()
   const sectionRef = useRef<HTMLElement | null>(null)
   const [hasEnteredView, setHasEnteredView] = useState<boolean>(false)
 
@@ -122,20 +147,21 @@ function Numbers() {
     >
       <div className={styles.container}>
         <header className={styles.header}>
-          <h2>{renderAnimatedText('Nossos Numeros SPFLY')}</h2>
+          <h2>{renderAnimatedText(titles[language])}</h2>
         </header>
 
         <div className={styles.grid}>
           {metrics.map((item, index) => (
-            <article key={item.label} className={styles.card}>
+            <article key={item.label.pt} className={styles.card}>
               <p className={styles.label}>
-                {renderAnimatedText(item.label, 120 + index * 90)}
+                {renderAnimatedText(item.label[language], 120 + index * 90)}
               </p>
               <p className={styles.value}>
                 <CounterValue
                   start={hasEnteredView}
                   target={item.target}
                   decimals={item.decimals}
+                  locale={locales[language]}
                 />
                 <span>{item.suffix}</span>
               </p>

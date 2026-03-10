@@ -2,31 +2,77 @@ import { useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import type { TrackingQuery, TrackingSearchType } from '../trackingTypes'
 import styles from '../Tracking.module.css'
+import { useLanguage } from '../../../i18n/LanguageContext'
 
 type TrackingSearchProps = {
   isLoading: boolean
   onSearch: (query: TrackingQuery) => void
 }
 
-const options: { id: TrackingSearchType; label: string }[] = [
-  { id: 'codigo', label: 'Codigo' },
-  { id: 'destinatario', label: 'Destinatario' },
-  { id: 'pagador', label: 'Pagador' },
-  { id: 'remetente', label: 'Remetente' },
+const options: { id: TrackingSearchType }[] = [
+  { id: 'codigo' },
+  { id: 'destinatario' },
+  { id: 'pagador' },
+  { id: 'remetente' },
 ]
 
-const placeholders: Record<TrackingSearchType, string> = {
-  codigo: 'Digite o codigo de rastreio (ex: SP123456BR)',
-  destinatario: 'Digite o CPF/CNPJ do destinatario',
-  pagador: 'Digite o CPF/CNPJ do pagador',
-  remetente: 'Digite o CPF/CNPJ do remetente',
+const copy = {
+  pt: {
+    labels: {
+      codigo: 'Codigo',
+      destinatario: 'Destinatario',
+      pagador: 'Pagador',
+      remetente: 'Remetente',
+    },
+    placeholders: {
+      codigo: 'Digite o codigo de rastreio (ex: SP123456BR)',
+      destinatario: 'Digite o CPF/CNPJ do destinatario',
+      pagador: 'Digite o CPF/CNPJ do pagador',
+      remetente: 'Digite o CPF/CNPJ do remetente',
+    },
+    searching: 'Buscando...',
+    search: 'Buscar',
+  },
+  es: {
+    labels: {
+      codigo: 'Código',
+      destinatario: 'Destinatario',
+      pagador: 'Pagador',
+      remetente: 'Remitente',
+    },
+    placeholders: {
+      codigo: 'Ingrese el código de seguimiento (ej: SP123456BR)',
+      destinatario: 'Ingrese el CPF/CNPJ del destinatario',
+      pagador: 'Ingrese el CPF/CNPJ del pagador',
+      remetente: 'Ingrese el CPF/CNPJ del remitente',
+    },
+    searching: 'Buscando...',
+    search: 'Buscar',
+  },
+  en: {
+    labels: {
+      codigo: 'Code',
+      destinatario: 'Recipient',
+      pagador: 'Payer',
+      remetente: 'Sender',
+    },
+    placeholders: {
+      codigo: 'Enter tracking code (e.g. SP123456BR)',
+      destinatario: 'Enter recipient CPF/CNPJ',
+      pagador: 'Enter payer CPF/CNPJ',
+      remetente: 'Enter sender CPF/CNPJ',
+    },
+    searching: 'Searching...',
+    search: 'Search',
+  },
 }
 
 function TrackingSearch({ isLoading, onSearch }: TrackingSearchProps) {
+  const { language } = useLanguage()
   const [tipo, setTipo] = useState<TrackingSearchType>('codigo')
   const [valor, setValor] = useState<string>('')
 
-  const placeholder = useMemo(() => placeholders[tipo], [tipo])
+  const placeholder = useMemo(() => copy[language].placeholders[tipo], [tipo, language])
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -44,7 +90,7 @@ function TrackingSearch({ isLoading, onSearch }: TrackingSearchProps) {
             data-active={option.id === tipo}
             onClick={() => setTipo(option.id)}
           >
-            {option.label}
+            {copy[language].labels[option.id]}
           </button>
         ))}
       </div>
@@ -59,7 +105,7 @@ function TrackingSearch({ isLoading, onSearch }: TrackingSearchProps) {
           required
         />
         <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Buscando...' : 'Buscar'}
+          {isLoading ? copy[language].searching : copy[language].search}
         </button>
       </form>
     </div>

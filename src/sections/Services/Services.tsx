@@ -1,4 +1,5 @@
 import styles from './Services.module.css'
+import { useLanguage } from '../../i18n/LanguageContext'
 
 const services = [
   {
@@ -9,8 +10,12 @@ const services = [
         <path d="M4 7V17L12 21V11L4 7Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
       </svg>
     ),
-    title: 'Armazenagem',
-    description: 'Estrutura segura para guarda e movimentação eficiente de cargas.',
+    title: { pt: 'Armazenagem', es: 'Almacenamiento', en: 'Warehousing' },
+    description: {
+      pt: 'Estrutura segura para guarda e movimentação eficiente de cargas.',
+      es: 'Estructura segura para almacenamiento y movimiento eficiente de cargas.',
+      en: 'Secure infrastructure for storage and efficient cargo handling.',
+    },
   },
   {
     icon: (
@@ -21,8 +26,12 @@ const services = [
         <path d="M17 17C19.2 17 21 15.2 21 13V11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
       </svg>
     ),
-    title: 'Cross-docking',
-    description: 'Agilidade no transbordo e redução do tempo de permanência no CD.',
+    title: { pt: 'Cross-docking', es: 'Cross-docking', en: 'Cross-docking' },
+    description: {
+      pt: 'Agilidade no transbordo e redução do tempo de permanência no CD.',
+      es: 'Agilidad en transbordo y reducción del tiempo de permanencia en el CD.',
+      en: 'Agile transshipment and reduced dwell time in the distribution center.',
+    },
   },
   {
     icon: (
@@ -33,8 +42,12 @@ const services = [
         <path d="M17 17V5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
       </svg>
     ),
-    title: 'Gestão de estoque',
-    description: 'Controle inteligente com visibilidade de giro, saldo e reposição.',
+    title: { pt: 'Gestão de estoque', es: 'Gestión de inventario', en: 'Inventory management' },
+    description: {
+      pt: 'Controle inteligente com visibilidade de giro, saldo e reposição.',
+      es: 'Control inteligente con visibilidad de rotación, saldo y reposición.',
+      en: 'Smart control with visibility over turnover, stock and replenishment.',
+    },
   },
   {
     icon: (
@@ -45,8 +58,12 @@ const services = [
         <circle cx="17.5" cy="17.5" r="1.5" stroke="currentColor" strokeWidth="1.8" />
       </svg>
     ),
-    title: 'Distribuição',
-    description: 'Entregas planejadas com rastreabilidade e padronização operacional.',
+    title: { pt: 'Distribuição', es: 'Distribución', en: 'Distribution' },
+    description: {
+      pt: 'Entregas planejadas com rastreabilidade e padronização operacional.',
+      es: 'Entregas planificadas con trazabilidad y estandarización operativa.',
+      en: 'Planned deliveries with traceability and operational standardization.',
+    },
   },
   {
     icon: (
@@ -58,29 +75,50 @@ const services = [
         <path d="M17 12L15 14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
       </svg>
     ),
-    title: 'Operações dedicadas',
-    description: 'Times e fluxos desenhados sob medida para sua necessidade.',
+    title: { pt: 'Operações dedicadas', es: 'Operaciones dedicadas', en: 'Dedicated operations' },
+    description: {
+      pt: 'Times e fluxos desenhados sob medida para sua necessidade.',
+      es: 'Equipos y flujos diseñados a medida para su necesidad.',
+      en: 'Teams and workflows tailored to your operational needs.',
+    },
   },
 ]
 
+const copy = {
+  pt: {
+    title: 'Serviços logísticos para cada etapa da sua operação',
+    subtitle:
+      'Soluções modulares que se adaptam ao seu volume, tipo de carga e nível de serviço esperado.',
+  },
+  es: {
+    title: 'Servicios logísticos para cada etapa de su operación',
+    subtitle:
+      'Soluciones modulares que se adaptan a su volumen, tipo de carga y nivel de servicio esperado.',
+  },
+  en: {
+    title: 'Logistics services for every stage of your operation',
+    subtitle:
+      'Modular solutions that adapt to your volume, cargo profile and expected service level.',
+  },
+} as const
+
 function Services() {
+  const { language } = useLanguage()
+
   return (
     <section id="servicos" className={styles.section}>
       <div className={styles.container}>
-        <h2>Serviços logísticos para cada etapa da sua operação</h2>
-        <p>
-          Soluções modulares que se adaptam ao seu volume, tipo de carga e nível
-          de serviço esperado.
-        </p>
+        <h2>{copy[language].title}</h2>
+        <p>{copy[language].subtitle}</p>
 
         <div className={styles.grid}>
           {services.map((service) => (
-            <article className={styles.card} key={service.title}>
+            <article className={styles.card} key={service.title.pt}>
               <span className={styles.icon} aria-hidden="true">
                 {service.icon}
               </span>
-              <h3>{service.title}</h3>
-              <p>{service.description}</p>
+              <h3>{service.title[language]}</h3>
+              <p>{service.description[language]}</p>
             </article>
           ))}
         </div>

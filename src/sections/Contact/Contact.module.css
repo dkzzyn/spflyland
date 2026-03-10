@@ -79,11 +79,11 @@
 }
 
 .error {
-  color: #b42318;
+  color: var(--status-error);
 }
 
 .success {
-  color: #0f766e;
+  color: var(--status-success);
 }
 
 .info h3 {

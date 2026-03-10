@@ -20,12 +20,18 @@
 .brand {
   display: inline-flex;
   align-items: center;
+  margin-right: 22px;
 }
 
 .brandLogo {
-  height: 36px;
+  height: 76px;
   width: auto;
+ 
   display: block;
+}
+
+.brandLogoDark {
+  height: 92px;
 }
 
 .nav {
@@ -48,6 +54,16 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
+}
+
+.languageSelect {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-main);
+  border-radius: 999px;
+  padding: 8px 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
 .themeButton {
@@ -85,6 +101,7 @@
 
 .cta:hover {
   transform: translateY(-1px);
+  background: var(--primary-hover);
   box-shadow: 0 10px 22px rgba(255, 122, 0, 0.28);
 }
 
@@ -99,10 +116,22 @@
 }
 
 @media (max-width: 640px) {
+  .brandLogo {
+    height: 44px;
+  }
+
+  .brandLogoDark {
+    height: 54px;
+  }
+
   .themeButton {
     width: 38px;
     height: 38px;
     font-size: 1rem;
+  }
+
+  .languageSelect {
+    padding: 7px 8px;
   }
 
   .cta {

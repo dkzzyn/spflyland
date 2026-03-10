@@ -1,14 +1,22 @@
 import type { TrackingEvent } from '../trackingTypes'
 import styles from '../Tracking.module.css'
+import { useLanguage } from '../../../i18n/LanguageContext'
 
 type TrackingTimelineProps = {
   events: TrackingEvent[]
 }
 
 function TrackingTimeline({ events }: TrackingTimelineProps) {
+  const { language } = useLanguage()
+  const title = {
+    pt: 'Linha do tempo da carga',
+    es: 'Línea de tiempo de la carga',
+    en: 'Shipment timeline',
+  } as const
+
   return (
     <article className={styles.timelineCard}>
-      <h3>Linha do tempo da carga</h3>
+      <h3>{title[language]}</h3>
       <ol className={styles.timelineList}>
         {events.map((event, index) => (
           <li key={`${event.dataHora}-${event.status}`} className={styles.timelineItem}>

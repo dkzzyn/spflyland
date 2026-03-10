@@ -3,8 +3,10 @@ import Footer from './components/Footer/Footer'
 import ScrollReveal from './components/ScrollReveal/ScrollReveal'
 import WhatsAppFloat from './components/WhatsAppFloat/WhatsAppFloat'
 import Hero from './sections/Hero/Hero'
+import Reference from './sections/Reference/Reference'
 import Tracking from './sections/Tracking/Tracking'
 import Services from './sections/Services/Services'
+import Capabilities from './sections/Capabilities/Capabilities'
 import Numbers from './sections/Numbers/Numbers'
 import About from './sections/About/About'
 import Differentials from './sections/Differentials/Differentials'
@@ -23,22 +25,28 @@ function App() {
         <ScrollReveal delayMs={60}>
           <Services />
         </ScrollReveal>
-        <ScrollReveal delayMs={90}>
+        <ScrollReveal delayMs={80}>
+          <Capabilities />
+        </ScrollReveal>
+        <ScrollReveal delayMs={100}>
           <Numbers />
         </ScrollReveal>
-        <ScrollReveal delayMs={120}>
+        <ScrollReveal delayMs={130}>
           <About />
         </ScrollReveal>
-        <ScrollReveal delayMs={150}>
+        <ScrollReveal delayMs={160}>
           <Differentials />
         </ScrollReveal>
-        <ScrollReveal delayMs={180}>
+        <ScrollReveal delayMs={190}>
+          <Reference />
+        </ScrollReveal>
+        <ScrollReveal delayMs={220}>
           <Clients />
         </ScrollReveal>
-        <ScrollReveal delayMs={210}>
+        <ScrollReveal delayMs={250}>
           <Tracking />
         </ScrollReveal>
-        <ScrollReveal delayMs={240}>
+        <ScrollReveal delayMs={280}>
           <Contact />
         </ScrollReveal>
       </main>

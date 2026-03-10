@@ -1,18 +1,39 @@
 import { useEffect, useState } from 'react'
+import { useLanguage } from '../../i18n/LanguageContext'
 import styles from './Header.module.css'
 
-const navItems = [
-  { label: 'Início', href: '#inicio' },
-  { label: 'Rastreamento', href: '#rastreamento' },
-  { label: 'Serviços', href: '#servicos' },
-  { label: 'Estrutura', href: '#estrutura' },
-  { label: 'Diferenciais', href: '#diferenciais' },
-  { label: 'Clientes', href: '#clientes' },
-  { label: 'Contato', href: '#contato' },
+const content = {
+  pt: {
+    nav: ['Início', 'Rastreamento', 'Serviços', 'Estrutura', 'Diferenciais', 'Clientes', 'Contato'],
+    cta: 'Solicitar Cotação',
+  },
+  es: {
+    nav: ['Inicio', 'Seguimiento', 'Servicios', 'Estructura', 'Diferenciales', 'Clientes', 'Contacto'],
+    cta: 'Solicitar Cotización',
+  },
+  en: {
+    nav: ['Home', 'Tracking', 'Services', 'Structure', 'Differentials', 'Clients', 'Contact'],
+    cta: 'Request Quote',
+  },
+} as const
+
+const navHrefs = [
+  '#inicio',
+  '#rastreamento',
+  '#servicos',
+  '#estrutura',
+  '#diferenciais',
+  '#clientes',
+  '#contato',
 ]
 
 function Header() {
+  const { language, setLanguage } = useLanguage()
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
+  const logoSrc =
+    theme === 'dark'
+      ? '/img/vert_cor_negativo_page-0001.png'
+      : '/img/logo-positiva.png'
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('spfly-theme')
@@ -35,21 +56,31 @@ function Header() {
       <div className={styles.container}>
         <a href="#inicio" className={styles.brand}>
           <img
-            className={styles.brandLogo}
-            src="/img/logo_spfly.png"
+            className={`${styles.brandLogo} ${theme === 'dark' ? styles.brandLogoDark : ''}`}
+            src={logoSrc}
             alt="SPFLY Logística"
           />
         </a>
 
         <nav className={styles.nav} aria-label="Navegação principal">
-          {navItems.map((item) => (
-            <a key={item.href} href={item.href} className={styles.navLink}>
-              {item.label}
+          {navHrefs.map((href, index) => (
+            <a key={href} href={href} className={styles.navLink}>
+              {content[language].nav[index]}
             </a>
           ))}
         </nav>
 
         <div className={styles.actions}>
+          <select
+            className={styles.languageSelect}
+            value={language}
+            onChange={(event) => setLanguage(event.target.value as 'pt' | 'es' | 'en')}
+            aria-label="Selecionar idioma"
+          >
+            <option value="pt">PT</option>
+            <option value="es">ES</option>
+            <option value="en">EN</option>
+          </select>
           <button
             type="button"
             className={styles.themeButton}
@@ -87,7 +118,7 @@ function Header() {
             )}
           </button>
           <a href="#contato" className={styles.cta}>
-            Solicitar Cotação
+            {content[language].cta}
           </a>
         </div>
       </div>
