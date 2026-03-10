@@ -1,7 +1,7 @@
 import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
 import ScrollReveal from './components/ScrollReveal/ScrollReveal'
-import WhatsAppFloat from './components/WhatsAppFloat/WhatsAppFloat'
+import ChatWidget from './components/WhatsAppFloat/WhatsAppFloat'
 import Hero from './sections/Hero/Hero'
 import Reference from './sections/Reference/Reference'
 import Tracking from './sections/Tracking/Tracking'
@@ -53,7 +53,7 @@ function App() {
       <ScrollReveal delayMs={120}>
         <Footer />
       </ScrollReveal>
-      <WhatsAppFloat />
+      <ChatWidget />
     </div>
   )
 }

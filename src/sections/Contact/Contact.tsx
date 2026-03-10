@@ -175,10 +175,10 @@ function Contact() {
             WhatsApp: <a href="https://wa.me/5511999999999">(11) 99999-9999</a>
           </p>
           <p>
-            Telefone: <a href="tel:+551130000000">(11) 3000-0000</a>
+            Telefone: <a href="tel:+551130000000">(11) 2431-5030</a>
           </p>
           <p>
-            E-mail: <a href="mailto:contato@spflylogistica.com.br">contato@spflylogistica.com.br</a>
+            E-mail: <a href="mailto:contato@spflylogistica.com.br">comercial@spfly.com.br</a>
           </p>
           <a
             className={styles.whatsBtn}

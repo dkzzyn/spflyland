@@ -12,20 +12,50 @@ type Client = {
 
 const clients: Client[] = [
   {
-    id: 1,
-    name: 'Grupo Alfa',
-    segment: { pt: 'Varejo', es: 'Retail', en: 'Retail' },
-    logoUrl: '/logos/grupo-alfa.svg',
+    id: 0,
+    name: 'Cielo',
+    segment: {
+      pt: 'Pagamentos',
+      es: 'Pagos',
+      en: 'Payments',
+    },
+    logoUrl: '/img/logo-cielo.svg',
   },
   {
+    id: 6,
+    name: 'Keune',
+    segment: {
+      pt: 'Beleza e Cosméticos',
+      es: 'Belleza y Cosméticos',
+      en: 'Beauty and Cosmetics',
+    },
+    logoUrl: '/img/logo-keune.png',
+  },
+  {
+    id: 7,
+    name: 'RIMOWA',
+    segment: {
+      pt: 'Bens de Luxo',
+      es: 'Bienes de Lujo',
+      en: 'Luxury Goods',
+    },
+    logoUrl: '/img/logo-rimowa%20.png',
+  },
+  {
+    id: 1,
+    name: 'Iplace',
+    segment: { pt: 'Celulares', es: 'Retail', en: 'Retail' },
+    logoUrl: '/img/logo-iplace.png',
+  },
+  { 
     id: 2,
-    name: 'TransLog Brasil',
+    name: 'Arezo',
     segment: {
       pt: 'Transporte rodoviário',
       es: 'Transporte por carretera',
       en: 'Road transportation',
     },
-    logoUrl: '/logos/translog-brasil.svg',
+    logoUrl: '/img/logo-arezo.png',
   },
   {
     id: 3,

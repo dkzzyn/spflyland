@@ -1,23 +1,166 @@
+import { useEffect, useMemo, useRef, useState } from 'react'
+import type { FormEvent } from 'react'
 import styles from './WhatsAppFloat.module.css'
 
-function WhatsAppFloat() {
+type Message = {
+  id: number
+  from: 'bot' | 'user'
+  text: string
+}
+
+function ChatWidget() {
+  const [isOpen, setIsOpen] = useState(false)
+  const [inputValue, setInputValue] = useState('')
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: 1,
+      from: 'bot',
+      text: 'Olá! Sou o atendimento SPFLY. Posso ajudar com rastreio, cotação ou FAQ.',
+    },
+  ])
+
+  const modalRef = useRef<HTMLDivElement | null>(null)
+  const buttonRef = useRef<HTMLButtonElement | null>(null)
+  const messageIdRef = useRef(2)
+
+  useEffect(() => {
+    if (!isOpen) return
+
+    const onPointerDown = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Node
+      const clickedInsideModal = modalRef.current?.contains(target)
+      const clickedButton = buttonRef.current?.contains(target)
+
+      if (!clickedInsideModal && !clickedButton) {
+        setIsOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', onPointerDown)
+    document.addEventListener('touchstart', onPointerDown)
+    return () => {
+      document.removeEventListener('mousedown', onPointerDown)
+      document.removeEventListener('touchstart', onPointerDown)
+    }
+  }, [isOpen])
+
+  const botReply = (text: string) => {
+    const normalized = text.toLowerCase()
+    if (normalized.includes('rastre')) {
+      return 'Perfeito! Me envie o código da minuta para eu orientar o rastreamento.'
+    }
+    if (normalized.includes('cota')) {
+      return 'Ótimo! Para cotação, informe origem, destino, volume e prazo desejado.'
+    }
+    if (normalized.includes('faq') || normalized.includes('duvida')) {
+      return 'Sem problemas. Perguntas frequentes: prazo médio, áreas atendidas, SLA e tipos de operação.'
+    }
+    return 'Entendi. Posso ajudar com rastreio, cotação ou dúvidas gerais.'
+  }
+
+  const addUserMessage = (text: string) => {
+    const value = text.trim()
+    if (value === '') return
+
+    const userMessage: Message = {
+      id: messageIdRef.current++,
+      from: 'user',
+      text: value,
+    }
+    const botMessage: Message = {
+      id: messageIdRef.current++,
+      from: 'bot',
+      text: botReply(value),
+    }
+    setMessages((prev) => [...prev, userMessage, botMessage])
+    setInputValue('')
+  }
+
+  const quickActions = useMemo(
+    () => ['Rastreio', 'Cotação', 'FAQ'],
+    [],
+  )
+
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    addUserMessage(inputValue)
+  }
+
   return (
-    <a
-      className={styles.button}
-      href="https://wa.me/5511999999999"
-      target="_blank"
-      rel="noreferrer"
-      aria-label="Abrir conversa no WhatsApp"
-      title="Falar no WhatsApp"
-    >
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path
-          d="M12.04 2.02C6.53 2.02 2.07 6.48 2.07 11.98C2.07 13.74 2.53 15.47 3.41 17L2 22L7.16 20.64C8.62 21.44 10.27 21.86 12.04 21.86C17.54 21.86 22 17.41 22 11.9C22 6.48 17.54 2.02 12.04 2.02ZM17.83 15.69C17.59 16.35 16.47 16.89 15.88 16.99C15.49 17.05 14.98 17.11 12.09 15.92C8.39 14.39 5.96 10.92 5.77 10.67C5.58 10.42 4.25 8.66 4.25 6.85C4.25 5.05 5.17 4.17 5.49 3.84C5.81 3.51 6.18 3.43 6.4 3.43C6.62 3.43 6.84 3.43 7.03 3.44C7.2 3.45 7.46 3.38 7.69 3.92C7.92 4.45 8.47 6.18 8.55 6.34C8.62 6.5 8.67 6.67 8.58 6.84C8.5 7.02 8.42 7.13 8.29 7.29C8.15 7.46 8.01 7.66 7.88 7.81C7.74 7.96 7.59 8.14 7.77 8.44C7.95 8.73 8.55 9.72 9.42 10.52C10.56 11.55 11.52 11.87 11.85 12.02C12.18 12.16 12.37 12.14 12.53 11.96C12.7 11.79 13.21 11.15 13.41 10.89C13.59 10.61 13.79 10.58 14.07 10.69C14.35 10.79 15.84 11.52 16.16 11.67C16.48 11.84 16.69 11.91 16.77 12.05C16.85 12.18 16.85 12.82 16.61 13.47C16.37 14.14 18.07 14.95 17.83 15.69Z"
-          fill="currentColor"
-        />
-      </svg>
-    </a>
+    <div className={styles.widget}>
+      {isOpen && (
+        <div ref={modalRef} className={styles.modal} role="dialog" aria-label="Atendimento SPFLY">
+          <header className={styles.modalHeader}>
+            <h3>Atendimento SPFLY</h3>
+            <button
+              type="button"
+              className={styles.closeButton}
+              onClick={() => setIsOpen(false)}
+              aria-label="Fechar chat"
+            >
+              ×
+            </button>
+          </header>
+
+          <div className={styles.messages}>
+            <div className={styles.quickActions}>
+              {quickActions.map((action) => (
+                <button
+                  key={action}
+                  type="button"
+                  onClick={() => addUserMessage(action)}
+                  className={styles.quickActionButton}
+                >
+                  {action}
+                </button>
+              ))}
+            </div>
+
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`${styles.message} ${
+                  message.from === 'user' ? styles.userMessage : styles.botMessage
+                }`}
+              >
+                {message.text}
+              </div>
+            ))}
+          </div>
+
+          <form className={styles.inputBar} onSubmit={onSubmit}>
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(event) => setInputValue(event.target.value)}
+              placeholder="Digite sua mensagem"
+            />
+            <button type="submit">Enviar</button>
+          </form>
+        </div>
+      )}
+
+      <button
+        ref={buttonRef}
+        type="button"
+        className={styles.button}
+        onClick={() => setIsOpen((prev) => !prev)}
+        aria-label={isOpen ? 'Fechar chat' : 'Abrir chat'}
+        title={isOpen ? 'Fechar chat' : 'Abrir chat'}
+      >
+        {isOpen ? (
+          <span className={styles.closeIcon}>×</span>
+        ) : (
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M4 5.5C4 4.67 4.67 4 5.5 4H18.5C19.33 4 20 4.67 20 5.5V14.5C20 15.33 19.33 16 18.5 16H10.85L7 20V16H5.5C4.67 16 4 15.33 4 14.5V5.5Z"
+              fill="currentColor"
+            />
+          </svg>
+        )}
+      </button>
+    </div>
   )
 }
 
-export default WhatsAppFloat
+export default ChatWidget
