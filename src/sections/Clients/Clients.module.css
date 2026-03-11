@@ -59,12 +59,31 @@
   text-align: center;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: cardIn 0.6s ease forwards;
 }
 
 .card:hover {
   transform: translateY(-2px);
   border-color: var(--primary);
   box-shadow: 0 14px 24px rgba(0, 0, 0, 0.1);
+}
+
+.card:nth-child(4n + 1) {
+  animation-delay: 0.04s;
+}
+
+.card:nth-child(4n + 2) {
+  animation-delay: 0.1s;
+}
+
+.card:nth-child(4n + 3) {
+  animation-delay: 0.16s;
+}
+
+.card:nth-child(4n + 4) {
+  animation-delay: 0.22s;
 }
 
 .logoWrap {
@@ -81,6 +100,11 @@
   max-width: 100%;
   max-height: 66px;
   object-fit: contain;
+  transition: transform 0.25s ease;
+}
+
+.card:hover .logoWrap img {
+  transform: scale(1.04);
 }
 
 .card h3 {
@@ -101,6 +125,17 @@
   font-size: 0.85rem;
 }
 
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 900px) {
   .card {
     flex-basis: calc((100% - 14px) / 2);
@@ -111,5 +146,17 @@
   .card {
     flex-basis: 100%;
     min-width: 85%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .logoWrap img {
+    transition: none;
   }
 }
