@@ -190,7 +190,6 @@ function Clients() {
         </header>
 
         <div className={styles.carousel}>
-          <p className={styles.hint}>{copy[language].hint}</p>
           <div
             ref={trackRef}
             className={`${styles.track} ${isDragging ? styles.dragging : ''}`}

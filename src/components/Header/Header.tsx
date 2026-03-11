@@ -58,7 +58,7 @@ function Header() {
           />
           <img
             className={`${styles.brandLogo} ${styles.brandLogoDark}`}
-            src="/img/vert_cor_negativo_page-0001.png"
+            src="/img/logo-claro.png"
             alt="SPFLY Logística"
           />
         </a>
