@@ -32,44 +32,36 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04);
 }
 
-.searchTabs {
-  display: flex;
-  flex-wrap: wrap;
+.searchForm {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.formField {
+  display: grid;
   gap: 8px;
 }
 
-.searchTab {
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text-main);
-  border-radius: 999px;
-  padding: 8px 14px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
+.formField span {
+  font-size: 0.85rem;
+  color: var(--text-muted);
 }
 
-.searchTab[data-active='true'] {
-  border-color: var(--primary);
-  background: var(--status-bg);
-  color: var(--status-text);
-}
-
-.searchForm {
-  margin-top: 12px;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 10px;
-}
-
-.searchForm input {
+.searchForm input,
+.searchForm select {
   border: 1px solid var(--input-border);
   background: var(--input-bg);
   color: var(--text-main);
   border-radius: 12px;
   padding: 12px 14px;
   font: inherit;
+  width: 100%;
+}
+
+.formButtonWrap {
+  display: flex;
+  align-items: end;
 }
 
 .searchForm button {
@@ -81,6 +73,7 @@
   padding: 12px 20px;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
 }
 
 .searchForm button:hover:not(:disabled) {
@@ -154,6 +147,34 @@
   margin-top: 3px;
 }
 
+.downloadLink {
+  display: inline-flex;
+  margin-top: 3px;
+  text-decoration: none;
+  border-radius: 999px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 700;
+  padding: 6px 14px;
+}
+
+.linkActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.downloadLinkSecondary {
+  display: inline-flex;
+  text-decoration: none;
+  border-radius: 999px;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  font-weight: 700;
+  padding: 5px 13px;
+}
+
 .timelineCard h3 {
   margin: 0;
 }
@@ -186,6 +207,10 @@
   display: none;
 }
 
+.timelineItem[data-delivered='true'] .timelineContent h4 {
+  color: #169c31;
+}
+
 .timelineMarker {
   width: 10px;
   height: 10px;
@@ -201,6 +226,27 @@
   margin-left: -2px;
   background: var(--primary);
   box-shadow: 0 0 0 4px rgba(255, 90, 0, 0.16);
+}
+
+.timelineMarker[data-delivered='true'] {
+  width: 16px;
+  height: 16px;
+  margin-top: 3px;
+  margin-left: -3px;
+  background: #169c31;
+  box-shadow: 0 0 0 4px rgba(22, 156, 49, 0.18);
+  position: relative;
+}
+
+.timelineMarker[data-delivered='true']::after {
+  content: '✓';
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
 }
 
 .timelineContent h4 {
@@ -220,14 +266,20 @@
 
 @media (max-width: 700px) {
   .searchForm {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .searchForm button {
-    width: 100%;
+  .formButtonWrap {
+    grid-column: 1 / -1;
   }
 
   .summaryGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .searchForm {
     grid-template-columns: 1fr;
   }
 }

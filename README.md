@@ -23,11 +23,16 @@ cp .env.example .env.local
 
 Depois, preencha no `.env.local`:
 
-- `VITE_TRACKING_API_URL`
+- `VITE_TRACKING_NFE_API_URL` (API de NF-e por `documento` [CNPJ/CPF] + `numero` [NF])
+- `VITE_TRACKING_NFE_BY_KEY_API_URL` (API de NF-e por `chave` com 44 dígitos)
+- `VITE_TRACKING_MINUTA_API_URL` (API de Minuta por `codigo`)
+- `VITE_TRACKING_API_URL` (opcional, compatibilidade legada para NF-e)
 - `VITE_TRACKING_API_USER`
 - `VITE_TRACKING_API_PASSWORD`
 - `VITE_TRACKING_API_TOKEN`
 - `VITE_TRACKING_API_COMPROVANTE` (0 ou 1)
+- `VITE_TRACKING_NOTE_PDF_URL_TEMPLATE` (opcional, ex.: `https://api.exemplo.com/dfe/cte/nota?chave={chave}`)
+- `VITE_TRACKING_LEGACY_API_URL`
 
 Build de produção:
 
@@ -68,5 +73,5 @@ src/
 
 - O formulário de contato possui validação simples de campos obrigatórios no front-end.
 - O site usa navegação por âncoras com scroll suave.
-- A seção de rastreamento usa API real via `GET /tracking/ocorrencias?codigo=...&comprovante=...` quando as variáveis de ambiente estão configuradas; caso contrário, mostra fallback de demonstração.
+- A seção de rastreamento usa endpoints modernos de NF-e por `chave` (44 dígitos) ou por `documento` + `numero`, além de Minuta por `codigo`, todos com `comprovante`; se não houver retorno, usa API legada (`POST` com `tipo_rastreamento`, `cnpj` e `documento`) como fallback; sem API disponível, mostra dados de demonstração.
 # spflyland

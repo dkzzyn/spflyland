@@ -1,81 +1,84 @@
-import type {
-  TrackingQuery,
-  TrackingResponse,
-  TrackingSearchType,
-} from './trackingTypes'
+import type { TrackingQuery, TrackingResponse, TrackingSearchType } from './trackingTypes'
 
 type MockRecord = TrackingResponse & {
-  lookup: Record<TrackingSearchType, string>
+  lookup: {
+    tipo: TrackingSearchType
+    documentType: TrackingQuery['documentType']
+    cnpj: string
+    documento: string
+  }
 }
 
 const records: MockRecord[] = [
   {
     lookup: {
-      codigo: 'SP123456BR',
-      destinatario: '12345678000195',
-      pagador: '98765432000110',
-      remetente: '11122233000144',
+      tipo: 'destinatario',
+      documentType: 'nfe',
+      cnpj: '12345678000195',
+      documento: '12345',
     },
     shipment: {
-      codigo: 'SP123456BR',
+      codigo: '12345',
       statusAtual: 'Em rota de entrega',
       previsaoEntrega: '10/03/2026',
-      origem: 'Guarulhos - SP',
-      destino: 'Campinas - SP',
-      tipoServico: 'Distribuicao fracionada',
-      clientePagador: 'Grupo Alfa',
+      recebedor: 'Joao Silva',
+      notaFiscalUrl: 'https://example.com/nota/12345.pdf',
+      comprovanteUrl: null,
     },
     events: [
       {
         dataHora: '09/03/2026 08:42',
         status: 'Em rota de entrega',
-        local: 'Campinas - SP',
+        local: 'Codigo 103',
+        codigo: 103,
       },
       {
         dataHora: '09/03/2026 06:15',
         status: 'Em transito',
-        local: 'Hub SPFLY Jundiai',
+        local: 'Codigo 125',
+        codigo: 125,
       },
       {
         dataHora: '08/03/2026 19:30',
-        status: 'Coletado',
-        local: 'Guarulhos - SP',
-        observacao: 'Mercadoria conferida e liberada para viagem.',
+        status: 'Pedido enviado',
+        local: 'Codigo 0',
+        codigo: 0,
       },
     ],
   },
   {
     lookup: {
-      codigo: 'SP654321BR',
-      destinatario: '22334455000166',
-      pagador: '44556677000188',
-      remetente: '99988877000155',
+      tipo: 'pagador',
+      documentType: 'minuta',
+      cnpj: '44556677000188',
+      documento: '67890',
     },
     shipment: {
-      codigo: 'SP654321BR',
+      codigo: '67890',
       statusAtual: 'Entregue',
       previsaoEntrega: '09/03/2026',
-      origem: 'Barueri - SP',
-      destino: 'Sao Jose dos Campos - SP',
-      tipoServico: 'Entrega dedicada',
-      clientePagador: 'HealthCare SP',
+      recebedor: 'Maria Souza',
+      notaFiscalUrl: 'https://example.com/nota/67890.pdf',
+      comprovanteUrl: 'https://example.com/comprovante/67890.pdf',
     },
     events: [
       {
         dataHora: '09/03/2026 14:12',
         status: 'Entregue',
-        local: 'Sao Jose dos Campos - SP',
-        observacao: 'Entrega confirmada com assinatura digital.',
+        local: 'Codigo 1',
+        codigo: 1,
       },
       {
         dataHora: '09/03/2026 10:40',
         status: 'Em rota de entrega',
-        local: 'Sao Jose dos Campos - SP',
+        local: 'Codigo 103',
+        codigo: 103,
       },
       {
         dataHora: '08/03/2026 21:05',
         status: 'Em transito',
-        local: 'Hub SPFLY Vale do Paraiba',
+        local: 'Codigo 125',
+        codigo: 125,
       },
     ],
   },
@@ -86,10 +89,13 @@ function normalize(value: string) {
 }
 
 export function searchTracking(query: TrackingQuery): TrackingResponse | null {
-  const searchedValue = normalize(query.valor)
   const found = records.find((record) => {
-    const recordValue = normalize(record.lookup[query.tipo])
-    return recordValue === searchedValue
+    return (
+      record.lookup.tipo === query.tipo &&
+      record.lookup.documentType === query.documentType &&
+      normalize(record.lookup.cnpj) === normalize(query.cnpj) &&
+      normalize(record.lookup.documento) === normalize(query.documento)
+    )
   })
 
   if (!found) return null

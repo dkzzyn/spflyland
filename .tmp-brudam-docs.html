@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>APIs Brudam</title>
+    <link rel="stylesheet" type="text/css" href="./swagger-ui.css">
+    <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32"/>
+    <link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16"/>
+    <style>
+        html {
+            box-sizing: border-box;
+            overflow: -moz-scrollbars-vertical;
+            overflow-y: scroll;
+        }
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+        body {
+            margin: 0;
+            background: #fafafa;
+        }
+        #logo {
+            text-align: center;
+            width: 100%;
+            padding: 20px 0 50px 0;
+        }
+        .information-container .info {
+            margin-top: 0 !important;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div id="logo">
+    <img src="https://cdn.brudam.com.br/img/logo.gif" title="Brudam" alt="Brudam" />
+</div>
+<div id="swagger-ui"></div>
+<script src="./swagger-ui-bundle.js"></script>
+<script src="./swagger-ui-standalone-preset.js"></script>
+<script>
+    window.onload = function () {
+        const HideInfoUrlPartsPlugin = () => {
+            return {
+                wrapComponents: {
+                    InfoUrl: () => () => null
+                }
+            }
+        };
+        const ui = SwaggerUIBundle({
+            useQueryConfig: false,
+            url: "/docs/swagger.php",
+            dom_id: '#swagger-ui',
+            deepLinking: true,
+            presets: [
+                SwaggerUIBundle.presets.apis,
+                SwaggerUIStandalonePreset
+            ],
+            plugins: [
+                SwaggerUIBundle.plugins.DownloadUrl,
+                HideInfoUrlPartsPlugin
+            ],
+            layout: "BaseLayout",
+            validatorUrl: null,
+            filter: false
+        });
+        window.ui = ui
+    }
+</script>
+</body>
+</html>

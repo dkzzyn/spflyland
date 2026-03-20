@@ -12,26 +12,35 @@ function TrackingSummary({ shipment }: TrackingSummaryProps) {
     pt: {
       title: 'Remessa',
       delivery: 'Previsao de entrega',
-      origin: 'Origem',
-      destination: 'Destino',
-      service: 'Tipo de servico',
-      payer: 'Cliente pagador',
+      receiver: 'Nome do recebedor',
+      invoice: 'Nota fiscal (PDF)',
+      proof: 'Comprovante de entrega',
+      viewButton: 'Visualizar',
+      downloadButton: 'Download',
+      noInvoice: 'Sem nota em PDF disponivel',
+      noProof: 'Sem comprovante de entrega',
     },
     es: {
       title: 'Envío',
       delivery: 'Entrega prevista',
-      origin: 'Origen',
-      destination: 'Destino',
-      service: 'Tipo de servicio',
-      payer: 'Cliente pagador',
+      receiver: 'Nombre del receptor',
+      invoice: 'Factura (PDF)',
+      proof: 'Comprobante de entrega',
+      viewButton: 'Ver',
+      downloadButton: 'Descargar',
+      noInvoice: 'Sin factura PDF disponible',
+      noProof: 'Sin comprobante de entrega',
     },
     en: {
       title: 'Shipment',
       delivery: 'Estimated delivery',
-      origin: 'Origin',
-      destination: 'Destination',
-      service: 'Service type',
-      payer: 'Paying customer',
+      receiver: 'Receiver name',
+      invoice: 'Invoice (PDF)',
+      proof: 'Delivery proof',
+      viewButton: 'View',
+      downloadButton: 'Download',
+      noInvoice: 'No invoice PDF available',
+      noProof: 'No delivery proof',
     },
   } as const
 
@@ -50,20 +59,38 @@ function TrackingSummary({ shipment }: TrackingSummaryProps) {
           <strong>{shipment.previsaoEntrega}</strong>
         </div>
         <div>
-          <p>{labels[language].origin}</p>
-          <strong>{shipment.origem}</strong>
+          <p>{labels[language].receiver}</p>
+          <strong>{shipment.recebedor}</strong>
         </div>
         <div>
-          <p>{labels[language].destination}</p>
-          <strong>{shipment.destino}</strong>
+          <p>{labels[language].invoice}</p>
+          {shipment.notaFiscalUrl ? (
+            <div className={styles.linkActions}>
+              <a className={styles.downloadLink} href={shipment.notaFiscalUrl} target="_blank" rel="noreferrer">
+                {labels[language].viewButton}
+              </a>
+              <a className={styles.downloadLinkSecondary} href={shipment.notaFiscalUrl} download>
+                {labels[language].downloadButton}
+              </a>
+            </div>
+          ) : (
+            <strong>{labels[language].noInvoice}</strong>
+          )}
         </div>
         <div>
-          <p>{labels[language].service}</p>
-          <strong>{shipment.tipoServico}</strong>
-        </div>
-        <div>
-          <p>{labels[language].payer}</p>
-          <strong>{shipment.clientePagador}</strong>
+          <p>{labels[language].proof}</p>
+          {shipment.comprovanteUrl ? (
+            <div className={styles.linkActions}>
+              <a className={styles.downloadLink} href={shipment.comprovanteUrl} target="_blank" rel="noreferrer">
+                {labels[language].viewButton}
+              </a>
+              <a className={styles.downloadLinkSecondary} href={shipment.comprovanteUrl} download>
+                {labels[language].downloadButton}
+              </a>
+            </div>
+          ) : (
+            <strong>{labels[language].noProof}</strong>
+          )}
         </div>
       </div>
     </article>

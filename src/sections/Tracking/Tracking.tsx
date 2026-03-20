@@ -12,8 +12,8 @@ const copy = {
   pt: {
     title: 'Rastreamento SPFLY',
     subtitle:
-      'Acompanhe sua carga em tempo real informando o codigo de rastreio ou CPF/CNPJ.',
-    required: 'Informe um valor para consultar o rastreio.',
+      'Acompanhe sua carga em tempo real por chave NF-e (44 digitos) ou por CNPJ/CPF + numero da nota.',
+    required: 'Preencha o documento. Para NF por numero, informe tambem CNPJ/CPF.',
     notFound:
       'Nao encontramos nenhuma remessa para esses dados. Confira o codigo ou fale com nosso atendimento.',
     fallback:
@@ -24,8 +24,8 @@ const copy = {
   es: {
     title: 'Seguimiento SPFLY',
     subtitle:
-      'Siga su carga en tiempo real informando el código de seguimiento o CPF/CNPJ.',
-    required: 'Ingrese un valor para consultar el seguimiento.',
+      'Siga su carga en tiempo real por clave NF-e (44 digitos) o por CNPJ/CPF + numero de factura.',
+    required: 'Complete el documento. Para NF por numero, informe tambien CNPJ/CPF.',
     notFound:
       'No encontramos envíos con estos datos. Verifique el código o contacte nuestro equipo.',
     fallback:
@@ -36,8 +36,8 @@ const copy = {
   en: {
     title: 'SPFLY Tracking',
     subtitle:
-      'Track your shipment in real time by entering tracking code or CPF/CNPJ.',
-    required: 'Please provide a value to run tracking.',
+      'Track your shipment in real time using NF-e key (44 digits) or CNPJ/CPF + invoice number.',
+    required: 'Please provide the document. For invoice number lookup, provide CNPJ/CPF as well.',
     notFound:
       'No shipment found for these details. Check the code or contact our team.',
     fallback:
@@ -55,11 +55,16 @@ function Tracking() {
   const [result, setResult] = useState<TrackingResponse | null>(null)
 
   const handleSearch = async (query: TrackingQuery) => {
+    if (isLoading) return
+
     setIsLoading(true)
     setError('')
     setResult(null)
 
-    if (query.valor.trim() === '') {
+    const numericDocument = query.documento.replace(/[^\d]+/g, '')
+    const needsCnpj = query.documentType === 'nfe' && numericDocument.length < 44
+
+    if (query.documento.trim() === '' || (needsCnpj && query.cnpj.trim() === '')) {
       setError(text.required)
       setIsLoading(false)
       return
@@ -76,7 +81,14 @@ function Tracking() {
 
       setResult(found)
       setIsLoading(false)
-    } catch {
+    } catch (caughtError) {
+      const message = caughtError instanceof Error ? caughtError.message : ''
+      if (message.startsWith('tracking_api_message:')) {
+        setError(message.replace('tracking_api_message:', '').trim())
+        setIsLoading(false)
+        return
+      }
+
       const fallback = searchTracking(query)
       if (fallback) {
         setResult(fallback)
