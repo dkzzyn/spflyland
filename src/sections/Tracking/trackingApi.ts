@@ -82,6 +82,17 @@ function normalizeDigits(value: string) {
   return value.replace(/[^\d]+/g, '')
 }
 
+function resolveEndpointForRuntime(endpoint: string) {
+  if (/^https?:\/\//i.test(endpoint)) return endpoint
+
+  const normalizedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`
+  if (import.meta.env.DEV) return normalizedEndpoint
+
+  const proxyTarget = import.meta.env.VITE_API_PROXY_TARGET
+  if (!proxyTarget) return normalizedEndpoint
+  return new URL(normalizedEndpoint, proxyTarget).toString()
+}
+
 function formatDate(date: string | undefined) {
   if (!date) return '-'
   const withSpace = date.trim().replace('T', ' ')
@@ -317,7 +328,8 @@ async function fetchFromModernApi(query: TrackingQuery): Promise<TrackingRespons
 
   const requestByParams = async (params: Record<string, string>, customEndpoint?: string) => {
     const targetEndpoint = customEndpoint || endpoint
-    const url = new URL(targetEndpoint, window.location.origin)
+    const runtimeEndpoint = resolveEndpointForRuntime(targetEndpoint)
+    const url = new URL(runtimeEndpoint, window.location.origin)
     Object.entries(params).forEach(([key, value]) => {
       if (value !== '') url.searchParams.set(key, value)
     })

@@ -23,6 +23,7 @@ cp .env.example .env.local
 
 Depois, preencha no `.env.local`:
 
+- `VITE_API_PROXY_TARGET` (obrigatorio em producao se os endpoints estiverem como caminho relativo `/api/...`)
 - `VITE_TRACKING_NFE_API_URL` (API de NF-e por `documento` [CNPJ/CPF] + `numero` [NF])
 - `VITE_TRACKING_NFE_BY_KEY_API_URL` (API de NF-e por `chave` com 44 dígitos)
 - `VITE_TRACKING_MINUTA_API_URL` (API de Minuta por `codigo`)
