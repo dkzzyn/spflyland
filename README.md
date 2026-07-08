@@ -76,3 +76,4 @@ src/
 - O site usa navegação por âncoras com scroll suave.
 - A seção de rastreamento usa endpoints modernos de NF-e por `chave` (44 dígitos) ou por `documento` + `numero`, além de Minuta por `codigo`, todos com `comprovante`; se não houver retorno, usa API legada (`POST` com `tipo_rastreamento`, `cnpj` e `documento`) como fallback; sem API disponível, mostra dados de demonstração.
 # spflyland
+# spflylandnova
